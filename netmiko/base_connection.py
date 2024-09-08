@@ -1671,6 +1671,7 @@ A paramiko SSHException occurred during connection creation:
         use_genie: bool = False,
         cmd_verify: bool = True,
         raise_parsing_error: bool = False,
+        read_timeout_bool: bool = True,
     ) -> Union[str, List[Any], Dict[str, Any]]:
         """Execute command_string on the SSH channel using a pattern-based mechanism. Generally
         used for show commands. By default this method will keep waiting to receive data until the
@@ -1712,12 +1713,14 @@ A paramiko SSHException occurred during connection creation:
         :param cmd_verify: Verify command echo before proceeding (default: True).
 
         :param raise_parsing_error: Raise exception when parsing output to structured data fails.
+
+        :param read_timeout_bool: To check if read_timeout_override is required for this command or not(default : True)
         """
 
         # Time to delay in each read loop
         loop_delay = 0.025
 
-        if self.read_timeout_override:
+        if self.read_timeout_override and read_timeout_bool:
             read_timeout = self.read_timeout_override
 
         if self.delay_factor_compat:
